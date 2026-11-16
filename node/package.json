@@ -38,9 +38,9 @@
     "node": ">=18"
   },
   "peerDependencies": {
-    "mq-bridge": ">=0.4.18"
+    "mq-bridge": ">=1.6.0"
   },
   "devDependencies": {
-    "mq-bridge": "0.4.18"
+    "mq-bridge": "1.6.1"
   }
 }

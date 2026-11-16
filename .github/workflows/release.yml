@@ -17,11 +17,11 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.11"
 
@@ -70,18 +70,18 @@ jobs:
             platform: win32-x64-msvc
             triple: x86_64-pc-windows-msvc
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
 
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@29eef336d9b2848a0b548edc03f92a220660cdb8
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
-          node-version: "20"
+          node-version: "24"
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.11"
 
@@ -90,7 +90,7 @@ jobs:
         working-directory: node
         run: |
           npm install --no-package-lock
-          python -m pip install "mq-bridge[plugin-packaging]==0.4.18"
+          python -m pip install "mq-bridge[plugin-packaging]==1.6.1"
 
       - name: Stage npm native library
         shell: bash
@@ -164,21 +164,21 @@ jobs:
           PY
 
       - name: Upload standalone plugin archive
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: standalone-${{ matrix.platform }}
           path: release-dist/mq-bridge-myendpoint-*
           if-no-files-found: error
 
       - name: Upload npm native library
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: npm-${{ matrix.platform }}
           path: node/prebuilds
           if-no-files-found: error
 
       - name: Upload Python wheel
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: python-${{ matrix.platform }}
           path: python/dist/*.whl
@@ -193,7 +193,7 @@ jobs:
       contents: read
       id-token: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
 
@@ -213,7 +213,7 @@ jobs:
           CARGO_REGISTRY_TOKEN: ${{ steps.auth.outputs.token }}
 
       - name: Upload crate archive
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: crate-package
           path: target/package/*.crate
@@ -228,20 +228,20 @@ jobs:
       contents: read
       id-token: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
-          node-version: "20"
+          node-version: "24"
           registry-url: https://registry.npmjs.org
 
       - name: Install npm with trusted publishing support
         run: npm install --global npm@11.5.1
 
       - name: Download native libraries
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           pattern: npm-*
           path: node/prebuilds
@@ -257,7 +257,7 @@ jobs:
         run: npm publish ./dist/*.tgz --access public
 
       - name: Upload npm tarball
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: npm-tarball
           path: dist/*.tgz
@@ -273,13 +273,13 @@ jobs:
       id-token: write
     steps:
       - name: Download wheels
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           pattern: python-*
           path: dist
           merge-multiple: true
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.11"
 
@@ -302,33 +302,33 @@ jobs:
       contents: write
     steps:
       - name: Download standalone plugin archives
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           pattern: standalone-*
           path: artifacts/plugins
           merge-multiple: true
 
       - name: Download npm tarball
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: npm-tarball
           path: artifacts/npm
 
       - name: Download Python wheels
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           pattern: python-*
           path: artifacts/python
           merge-multiple: true
 
       - name: Download crate archive
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: crate-package
           path: artifacts/crate
 
       - name: Create release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@8a0cd651e5b2365bd640854a3fa5dfc70e4875f3 # v3.0.4
         with:
           generate_release_notes: true
           files: artifacts/**/*
@@ -341,7 +341,7 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
       - name: Render formula from release assets
@@ -397,12 +397,12 @@ jobs:
             runner: windows-latest
             artifact: standalone-win32-x64-msvc
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
 
       - name: Download the standalone plugin archive
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: ${{ matrix.artifact }}
           path: release-dist
@@ -433,7 +433,7 @@ jobs:
       contents: read
     steps:
       - name: Download conda packages
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           pattern: conda-*
           path: conda-packages

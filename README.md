@@ -5,7 +5,7 @@ ships as a Rust crate, an npm package, a Python wheel, a Homebrew formula and a
 conda package, all from one compiled library. The endpoint in `src/lib.rs` is a
 working example: it posts each batch as NDJSON to a URL.
 
-It needs mq-bridge 0.4.18 or later.
+It needs mq-bridge 1.6 or later.
 
 ## Start a plugin from it
 
